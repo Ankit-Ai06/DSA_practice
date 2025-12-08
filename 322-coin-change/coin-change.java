@@ -3,17 +3,28 @@ import java.util.Arrays;
 class Solution {
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount + 1];
-        Arrays.fill(dp, amount + 1); // initialize with a large value
-        dp[0] = 0; // 0 coins needed for amount 0
+        Arrays.fill(dp, -1);
+        int ans = solve(coins, amount, dp);
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+    private int solve(int[] coins, int amount, int[] dp) {
 
-        for (int i = 1; i <= amount; i++) {
-            for (int coin : coins) {
-                if (i - coin >= 0) {
-                    dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
-                }
+        if (amount < 0) return Integer.MAX_VALUE;   
+        if (amount == 0) return 0;                  
+
+        if (dp[amount] != -1) return dp[amount];
+
+        int minCoins = Integer.MAX_VALUE;
+
+        for (int coin : coins) {
+            int res = solve(coins, amount - coin, dp);
+
+            if (res != Integer.MAX_VALUE) {
+                minCoins = Math.min(minCoins, 1 + res);
             }
         }
 
-        return dp[amount] > amount ? -1 : dp[amount];
+        dp[amount] = minCoins;
+        return dp[amount];
     }
 }
