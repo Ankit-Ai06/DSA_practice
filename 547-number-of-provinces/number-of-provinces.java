@@ -13,7 +13,7 @@ class Solution {
         return count;
     }
 
-    private void dfs(int[][] isConnected, boolean[] visited, int city) {
+    public void dfs(int[][] isConnected, boolean[] visited, int city) {
         visited[city] = true;
 
         for (int neighbor = 0; neighbor < isConnected.length; neighbor++) {
